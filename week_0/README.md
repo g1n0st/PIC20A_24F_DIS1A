@@ -118,6 +118,7 @@ java HelloWorld
       - Switch to 11 by inputting the following:
       ``` Bash
       export JAVA_HOME=`/usr/libexec/java_home -v 11.0`
+      export PATH=$JAVA_HOME/bin:$PATH
       ```
     - For Ubuntu and other Linux systems:
       - You can find the installed Java versions in the `/usr/lib/jvm/` directory. Run this command to list them:
