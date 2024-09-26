@@ -136,8 +136,13 @@ java HelloWorld
       ```
     - For Windows:
       - Type (Find the path where your JDK 11 was installed and replace it in the following code snippet):
-      ``` Bash
-      set JAVA_HOME= <Your path to JAVA version 11>
+      ``` CMD
+      set JAVA_HOME="<Your path to JAVA version 11>"
+      set PATH=%JAVA_HOME%\bin;%PATH%
+      ```
+      For my test Windows machine, Java 11 is installed on `C:\Program Files\Eclipse Adoptium\jdk-11.0.24.8-hotspot\`; if your setting is the same as mine, run the following commands using `Command Prompt` (NOTE: NOT `Windows PowerShell`):
+      ``` CMD
+      set JAVA_HOME="C:\Program Files\Eclipse Adoptium\jdk-11.0.24.8-hotspot\"
       set PATH=%JAVA_HOME%\bin;%PATH%
       ```
       - Another method is - Look at the first answer in this [link](https://superuser.com/questions/262757/changing-current-version-of-java-within-windows) but replace it with the location 
