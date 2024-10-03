@@ -22,9 +22,9 @@ What is the output of the following snippet?
 ``` Java
 public class AsciiTest {
     public static void main(String[] args) {
-        char a = '2' + 0;
+        char a = '0' + 2;
         System.out.println(a);
-        char b = '2' + '0';
+        char b = '0' + '2';
         System.out.println(b);
     }
 }
