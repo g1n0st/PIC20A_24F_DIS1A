@@ -85,7 +85,7 @@ Static fun() called
 
 # Math
 
-Math is a utility class contains a set of common and reused members. Below is a example of `sin()` function
+Math is a utility class contains a set of common and reused members. Below is an example of `sin()` function
 
 ``` Java
 public class SinTest {
