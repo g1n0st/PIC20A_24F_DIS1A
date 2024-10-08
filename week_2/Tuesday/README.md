@@ -2,7 +2,7 @@
 
 ### Static Data Members
 
-Static data members in Java are class members and shared among all objects. For example, in the following Java program, the static variable `count` is used to count the number of objects created.
+Static data members in Java are class members that shared among all objects. For example, in the following Java program, the static variable `count` is used to count the number of objects created.
 
 ``` Java
 class StaticDataTest {
