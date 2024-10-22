@@ -8,7 +8,7 @@ A class is a blueprint or template for creating objects with fields and methods.
 
 **Access Control**: Methods can also have access modifiers to control their visibility and accessibility. Public fields/methods can be accessed from anywhere while private fields/methods can only be accessed within the class scope
 
-**Non-static/static:** Non-static fields belong to individual instances (objects) of the class whileStatic fields are associated with the class itself rather than with specific instances (objects) of the class. Static fields/methods can be accesses without initializing any object while non-static fields/methods have to be accessed via object instances.
+**Non-static/static:** Non-static fields belong to individual instances (objects) of the class while static fields are associated with the class itself rather than with specific instances (objects) of the class. Static fields/methods can be accesses without initializing any object while non-static fields/methods have to be accessed via object instances.
 
 # Static Keyword
 
