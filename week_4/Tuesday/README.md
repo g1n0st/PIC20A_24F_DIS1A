@@ -53,6 +53,10 @@ class ErrorStaticTest {
 }
 ```
 
+2.  They must only access static data.
+3.  They cannot access the `this` pointer.
+4.  Static data members and static methods can be accessed without creating an object. They can be accessed using the class names.
+
 # Summary of Constructors
 
 In Java, constructors are special methods used for initializing objects when they are created from a class. Constructors have the same name as the class and are used to set the initial state of an object.
