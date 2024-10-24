@@ -48,7 +48,7 @@ Note: if you have multiple classes within `Class1.java`, there should be only on
 To use the class of your package in `Main.java`, you may call it through a namespace like this
 
 ```Java
-Class1 myObject = new myPackage.Class1();
+myPackage.Class1 myObject = new myPackage.Class1();
 myObject.myMethod();
 ```
 
