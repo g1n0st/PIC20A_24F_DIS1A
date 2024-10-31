@@ -138,7 +138,7 @@ class Rectangle implements Shape {
 }
 ```
 
-- The `Shape` interface defines a contract (in this case, a method `calculateArea`) that all implementing classes must fulfill.
+- The `Shape` interface defines abstract methods (in this case, a method `calculateArea`) that all implementing classes must fulfill.
 - `Circle` and `Rectangle` are concrete classes that implement the `Shape` interface. They provide specific implementations for the `calculateArea` method.
 - The `AdvancedShape` interface is a further extension of `Shape` with an additional `calculatePerimeter` method that all implementing classes must fulfill.
 
