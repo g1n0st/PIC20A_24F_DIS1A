@@ -1,104 +1,208 @@
-# Stream
+# Events
 
-Often, you want to do I/O without paying attention to where you are reading from or writing to. You can read from or write to a file, the console, a network connection, or a peripheral device. You must establish such I/O channels in their own specific ways. Once a connection is established you have a stream, and you can polymorphically read from or write to a stream.
+**Events** are used to capture and respond to different types of user interactions with GUI components. An **event listener** is an interface that contains methods to be implemented for handling specific types of events. When an event occurs (like a button click, mouse movement, or key press), the corresponding listener's methods are invoked to execute predefined actions.
 
-## Input Stream (Abstract)
+### Commonly Used Event Listeners in Swing:
 
-An Inputstream reads (from somewhere) one byte at a time.
+1.  **ActionListener**: Responds to button clicks or menu selections.
+2.  **MouseListener**: Handles mouse events like clicks, presses, releases, enters, and exits.
+3.  **KeyListener**: Responds to keypress events on a component.
 
-```java
-public abstract int read() throws IOException
-```
-
-reads and return a byte of data. It returns -1 if the end of the stream is reached.
-
-```java
-public void close() throws IOException
-```
-
-closes the stream and releases any system resources associated with the stream.
-
-## Output Stream (Abstract)
-
-An Outputstream writes (to somewhere) one byte at a time.
-
-```java
-public abstract void write(int b) throws IOException
-```
-
-writes a byte of data.
-
-```java
-public void close() throws IOException
-```
-
-closes the stream and releases any system resources associated with the stream.
-
-## FileInputStream and FileOutputStream
-
-FileInputStream reads bytes from a file and FileOutputStream writes bytes to a file.
-
-```java
-InputStream in;
-OutputStream out;
-in = new FileInputStream("filename1"); 
-out = new FileOutputStream("filename2"); 
-while (true) {
-    int nextByte = in.read(); 
-    if (nextByte == -1)
-        break;
-    out.write((char) nextByte);
-} 
-in.close();
-out.close();
-```
-
-# Character Encoding
-
-**Unicode** provides a comprehensive character set that includes virtually every character from every written language, aiming for universal text representation.
-
-**ASCII** is an older, limited character encoding that is a subset of Unicode, representing basic English letters and control characters.
-
-**UTF-8** and **UTF-16** are encoding schemes that translate Unicode's universal character set into byte sequences for storage and transmission.
-
-## UTF-8
-
-UTF-8 (8-bit Unicode Transformation Format) is a widely used encoding scheme that encodes each Unicode character as a sequence of one to four bytes.
-
-- **1-byte characters**: The first 128 characters (U+0000 to U+007F), which correspond to the standard ASCII set, are encoded in a single byte. This makes UTF-8 fully backward compatible with ASCII. Format: 0xxxxxxx
-    
-- **2-byte characters**: Characters from U+0080 to U+07FF, including characters from many Latin-based and other alphabets, are encoded in two bytes. Format:110xxxxx 10xxxxxx
-    
-- **3-byte characters**: Characters from U+0800 to U+FFFF, which include characters from almost all modern scripts and symbols, are encoded in three bytes. Format:1110xxxx 10xxxxxx 10xxxxxx
-    
-- **4-byte characters**: Characters from U+10000 to U+10FFFF, which cover rare and historical scripts as well as emojis and other symbols, are encoded in four bytes. Format:11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
-    
-
-Based on the above rules, one should be able to figure out the translation between code points and byte representations
-
-## UTF-16
-
-UTF-16 (16-bit Unicode Transformation Format) is a character encoding for Unicode that uses 16 bits (or two bytes) for each character. Most characters from the Basic Multilingual Plane (BMP), which includes most characters in use today, are represented in 16 bits. Characters outside the BMP, known as supplementary characters, are encoded using pairs of 16-bit codes, called surrogate pairs.
-
-- For the characters requiring 1 char, the char can be correctly initialized using the code point.
-- The characters requiring 2 chars are called "supplementary characters". A pair of chars representing a supplementary character is called a "surrogate pair".
+When a Component has the method
 
 ```Java
-public class Utf16Example {
-    public static void main(String[] args) {
-        // A character in the BMP
-        char bmpChar = 'A'; // U+0041
-        System.out.println("BMP Character: " + bmpChar);
+public void addXListener(XListener l)
+```
 
-        // A character outside the BMP represented using surrogate pairs in Java
-        String surrogatePair = "\uD83D\uDE00"; // U+1F600 (😀)
-        System.out.println("Character with Surrogate Pair: " + surrogatePair);
+you can tell that it can trigger a XEvent under certain conditions.
+
+## ActionEvent & ActionListener
+
+Buttons and clickable components can fire `java.awt.event.ActionEvents`
+A `java.awt.event.ActionListener` listens to an ActionEvent.
+
+The interface ActionListener has one method
+
+```Java
+public void actionPerformed(ActionEvent e)
+```
+
+which is called when the ActionEvent the ActionListener is listening to is fired.
+
+A JButton (and any AbstractButton) can fire an ActionEvent. Use
+
+```Java
+addActionListener(ActionListener l)
+```
+
+to attach an ActionListener to the JButton’s ActionEvent.
+
+Below is a basic example of adding an `ActionListener` to a `JButton`:
+
+```Java
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+// Define the ActionListener as an independent class
+class ButtonClickActionListener implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("Button clicked!");
+    }
+}
+
+public class ButtonClickListener {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Event Listener Example");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(300, 200);
+
+        JButton button = new JButton("Click Me");
+
+        // Create an instance of the listener and add it to the button
+        ButtonClickActionListener listener = new ButtonClickActionListener();
+        button.addActionListener(listener);
+
+        frame.getContentPane().add(button);
+        frame.setVisible(true);
     }
 }
 ```
 
-The conversion between surrogate pair and code points follows some formula. We won't talk about this for this class. But one may make use of methods, like `charAt` to get the surrogate pair of a supplementary character.
+## MouseEvent & MouseListener
 
-## Mapping Table between Binary, Decimal and Hexdecimal
+To implement MouseListener, we need to override these 5 functions:
 
-<img src="./_resources/1eb51f194d24e884eea30534e0808911.png" alt="1eb51f194d24e884eea30534e0808911.png" width="465" height="287">
+```Java
+public void mouseClicked(MouseEvent e); 
+public void mouseEntered(MouseEvent e);
+public void mouseExisted(MouseEvent e); 
+public void mousePressed(MouseEvent e);
+public void mouseReleased(MouseEvent e);
+```
+
+Even if you don’t use all 5 MouseEvents, you must provide an implementation of the (implicitly abstract) methods. But for those you are not going to use, you can simply leave a blank implementation.
+
+```Java
+import javax.swing.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+// Define the MouseListener as an independent class
+class PanelMouseListener implements MouseListener {
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        System.out.println("Mouse Clicked at X: " + e.getX() + " Y: " + e.getY());
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // Implement if needed
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // Implement if needed
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // Implement if needed
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // Implement if needed
+    }
+}
+
+public class MouseEventListener {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("MouseListener Example");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(300, 200);
+
+        JPanel panel = new JPanel();
+
+        // Create an instance of the listener and add it to the panel
+        PanelMouseListener listener = new PanelMouseListener();
+        panel.addMouseListener(listener);
+
+        frame.add(panel);
+        frame.setVisible(true);
+    }
+}
+```
+
+## repaint method
+
+repaint() is an inherited instance method for all JPanel objects. Calling a JPanelObject.repaint() calls the paintComponent() method. Every time you wish to change the appearance of your JPanel, you must call repaint().
+
+Below is a code example of repainting JPanel with random colors:
+
+```Java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Random;
+
+class CustomColorPanel extends JPanel {
+    private Color bgColor = Color.LIGHT_GRAY;
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        setBackground(bgColor); // Use the current background color
+    }
+
+    // Change color method
+    public void changeColor() {
+        bgColor = new Color(new Random().nextInt(0xFFFFFF));
+        repaint(); // Request to repaint this panel
+    }
+}
+
+class ColorChangeMouseAdapter extends MouseAdapter {
+    private final CustomColorPanel panel;
+
+    public ColorChangeMouseAdapter(CustomColorPanel panel) {
+        this.panel = panel;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        panel.changeColor();
+    }
+}
+
+public class RepaintExample {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Repaint Example");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(300, 200);
+
+        CustomColorPanel colorPanel = new CustomColorPanel();
+        colorPanel.addMouseListener(new ColorChangeMouseAdapter(colorPanel));
+
+        frame.add(colorPanel);
+        frame.setVisible(true);
+    }
+}
+```
+
+## Dialogs
+
+A Diaglog window is an independent sub window to carry temporary notice apart from the main Sing Application Window. Most Dialogs presents an error message, or warning to users, can also presents images, or anything compatible with the main Swing Application.
+
+To create a simple, standard dialog, we can use JOptionPane class. Every dialog depends on a Frame component. When that Frame is destroyed, so are its dependent Dialogs.
+
+A Dialog created by JOptionPane is modal. When a modal Dialog is visible, it blocks user input to all other windows in the program. 
+
+```Java
+JOptionPane.showMessageDialog(frame, 
+    "A message",
+    "Warning type", 
+    JOptionPane.WARNING_MESSAGE);
+```
