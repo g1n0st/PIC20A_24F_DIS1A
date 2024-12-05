@@ -1,75 +1,12 @@
-**Note: this is just my personal summary of what we've covered this quarter. You should focus on lecture's code snippets on Bruinlearn for review.**
+**Note: this is just my personal summary of what we've covered this quarter. You should also focus on lecture's code snippets on Bruinlearn for review.**
 
-# Java Basic
+# Pre-Midterm Part
 
-## Primitive Data types
+Please refer to: https://github.com/g1n0st/PIC20A_24F_DIS1A/tree/master/week_6/Tuesday
 
-![111fa943b3d5d80399197f3499516bd2.png](./_resources/111fa943b3d5d80399197f3499516bd2.png)
+# Extra NOTE:
 
-**widening conversion:**
-
--  both implicit and explicit are okay
-
-\- In most cases there are not information loss, but conversion from int to float may have.
-
-**narrowing conversion**:
-
-\- only explicit, implicit will cause compilation error
-
-\- May cause information loss if source value is outside of the range of target data type
-
-## Control Flows
-
-if statement, while loop, for loop...
-
-## Java Classes
-
-### Static Keyword
-
-- static fields are shared by all class instances. They will always be there as long as the program is still running; for non-static field, each instance has its own copy.
-- Accessing static fields/method can be done as `Class.field` or `Class.func()`. No need to create instance first but non-static fields/method do need, e.g. `obj.field` or `obj.func()`
-- static block is usually used to initialize static fields, and it will only be executed once (before the main function). In contrast, non-static block will be executed every time an instance is created.
-
-### Objects
-
-To create an object/instance of a class, we typically use `new` keyword call some constructor function.
-
-Every time an instance is created , e.g. `A a = new A()`, it will gives us a reference value and an object. The ref value usually means the memory address of this object.
-
-To save memory, we usually let difference reference variables have the same ref value. This means, these ref variables point to the same object.
-
-```Java
-A a1 = new A();
-A a2 = a1; // a1, a2 refer to the same object
-```
-
-- If we compare two ref vars, we are actually comparing their ref values.
-- If we pass ref vars as function parameters, java will create a new copy of this ref variable but won't create a copy of the object.
-
-### Overloading Functions
-
-A class has more than one method of the same name and their parameters are different
-
-1.  number of parameters can be different
-2.  parameter data types can be different
-
-For example:
-
-```Java
-void f(int a)
-void f(double a)
-void f(int a, int b)
-```
-
-But overloading has nothing to do with return data types
-
-### ToString function
-
-defines the output format when we try to print a class instance
-
-### Access Modifiers
-
-from left to right: least accessible -> most accessible
+###  Access Modifiers
 
 | Class / Access Specifier | private | default | protected | public |
 | --- | --- | --- | --- | --- |
@@ -78,94 +15,141 @@ from left to right: least accessible -> most accessible
 | Subclass outside of package | No  | No  | Yes | Yes |
 | Unrelated class outside of package | No  | No  | No  | Yes |
 
-# Inheritance
+A subclass can only override methods in the parent class that are visible to it. This includes: **protected**, **public**, or **package-private** and within the same package.
 
-Inheritance allows to construct hierarchy between different classes. Child class can inherit method and fields from parent class. Furthermore, we may define additional methods/fields and even override methods in child class.
+If a subclass defines a method with the same name, parameters, and return type as the parent class's private method, this is not overriding. Instead, the subclass defines a new, independent method that is unrelated to the parent’s private method, which is called hiding.
 
-## Upcasting & Downcasting
+###  Overriding
 
-\- Upcasting, similar to widening conversion, means casting a subclass ref variable to superclass. Both implicit and explicit are okay
+``` Java
+class Parent {
+    protected void show() {
+        System.out.println("Parent show method");
+    }
+}
 
-\- Downcasting, a bit similar to narrowing conversion, means casting a superclass ref variable to subclass. We can only do it using explicit way, otherwise compilation error. Moreover, we also need to take care of target ref var type and source obj type. If source object type is a parent class of target ref var type, it will lead to run time error
-
-```Java
-class A{}
-class B extends A{}
-class C extends B{}
-
-public class Main{
-    public static main(String[] str){
-        A a = new B(); // implicit upcasting
-        B b = (B) a; // explicit downcasting, okay
-        C c = (C) a; // explicit downcasting, run-time error!
+class Child extends Parent {
+    @Override
+    public void show() {
+        System.out.println("Child show method");
     }
 }
 ```
 
-## Polymorphism & Overriding
+## Hiding
 
-Non-static non-private methods may be overridden in subclass. Below I summarize the standard way to check the behavior of a function call:
+``` Java
+class Parent {
+    private void show() {
+        System.out.println("Parent show method");
+    }
+}
 
-1.  Check if this method is available in ref var class. See if it's defined and if it's accessible
-2.  Use the implementation version based on **obj type** instead of **ref type** (root of polymorphism)
+class Child extends Parent {
+    public void show() {
+        System.out.println("Child show method");
+    }
+}
+```
 
-## Super Keyword
+Static methods and fields can only be hidden, not overridden.
 
-super keyword allows you to call original version of method in the parent class
+## `toString()`
 
-constructor chaining: in the constructor function of a subclass, we must call superclass's constructor function. This should be achieved using super keyword
+Be careful when it is overridden. And you should be familiarize with its default behaviors, e.g., what happens when you print an array or a class by default.
 
-1\. explicit way: write `super()` or `super(param)` at the first line of subclass's constructor function
+# Post-Midterm Part
 
-2\. implicit way: do not call `super`. Java will implicitly insert `super()` to the first line of subclass's constructor function. We have to make sure the default constructor function is available in superclass, otherwise compilation error
+## super() Call in Constructors
 
-## Hidding
+If `super()` is not explicitly called, Java automatically inserts a no-argument `super()` call.
 
-fields and static methods can be hidden. More specifically, different from overriding, we should access them based on **ref type** rather than **obj type.**
+If super class no default constructor, missing calling `super()` will throw error
 
-## Abstract Class & Interface
+`super()` keyword also requires proper argument list to call.
 
-We can not create instances of an abstract class. Abstract class may contain abstract methods (methods without implementation)
+## GUI
 
-In Java, a subclass can only inherit from one parent class (to prevent implementation conflict). To address this limitation, interface is introduced. A class may implement multiple interfaces, but generally interfaces can only contain abstract methods.
+### JFrame & JPanel & JLabel & Layout Manager
 
-# GUI
+Be familiarize with all the APIs like `setDefaultCloseOperation`, `add`, `setPreferredSize`, `setVisible`, `GridLayout(rows, cols)`, `repaint()` ...
 
-## Basic GUI components
+The question type will not let you write APIs by hand, but will give you a specific code and let you determine the corresponding behavior (what will happen when you press certain button, what will be displayed on the screen, etc.)
 
-Container: JFrame, JPanel
+### JButton
 
-Components: JPanel, JButton, JLabel...
+**ActionListener**: Must implement the `actionPerformed(ActionEvent e)` method to define what happens when the button is clicked.
 
-JFrame: setDefaultCloseOperation...
+**actionPerformed**: Contains logic for handling the event.
 
-JPanel: paintComponent, repaint...
+### Timer
 
-**ActionListener & ActionEvent**
+`Timer` is used to perform an action repeatedly after a specified delay. The task to execute is specified using an `ActionListener`.
 
-This allows us to provide our own implementation to handle different kind of events.
+## Exception
 
-'instanceof' keyword will check if an object is an instance of a class. An subclass instance is also an instance of the parent class!
+**Try-Catch-Finally**
 
-check GUI.txt on bruin learn. You should be familiar with these methods.
+The try-catch-finally block is a fundamental construct in Java for handling exceptions. It allows developers to catch and handle exceptions that may occur within a specific block of code.
 
-# Exception
+**Basic try-catch**
 
-Refer to discussion materials on Week 9, Thursday
+The basic structure of a try-catch block is as follows:
 
-## uncheck exception vs checked exception
+```java
+try {
+    // Code that may throw an exception
+} catch (ExceptionType e) {
+    // Code to handle the exception
+}
+```
 
-unchecked exception is what we called as run-time exception. It won't give us compilation errors but the checked exception does.
+In this structure, the code within the try block is monitored for exceptions. If an exception occurs, it is caught by the catch block, where developers can provide the necessary code to handle the exception, such as logging an error message or taking corrective actions.
 
-To prevent from compilation errors caused by checked exception, one may
+**Multiple catch blocks**
 
-- either use a try catch block to handle it (recommended way)
-- or use a throw clause
+It is possible to catch different types of exceptions using multiple catch blocks:
 
-# Stream
+```java
+try {
+    // Code that may throw an exception
+} catch (ExceptionType1 e) {
+    // Code to handle ExceptionType1
+} catch (ExceptionType2 e) {
+    // Code to handle ExceptionType2
+}
+```
 
-Refer to discussion materials on Week 10, Tuesday
+By using multiple catch blocks, developers can handle different exceptions in a specific manner based on their types.
 
-You are expected to know how to read a file using FileInputStream and how to translate code point to binary representation based on UTF-8 scheme
+**The finally block**
 
-Check unicode.txt for details.
+The finally block is used to execute code that should always run, regardless of whether an exception occurs or not. It is typically used to release resources or perform cleanup operations. The finally block is placed after the catch block(s) and executes even if an exception is thrown or caught.
+
+```java
+try {
+    // Code that may throw an exception
+} catch (ExceptionType e) {
+    // Code to handle the exception
+} finally {
+    // Code that always executes
+}
+```
+
+The finally block ensures that critical cleanup tasks are performed, even if an exception occurs during the execution of the try or catch blocks.
+
+**Throws and Throw**
+
+The "throws" keyword is used in a method signature to declare that the method may throw a particular exception. It is typically used when a method cannot handle an exception itself and wants to pass the responsibility of handling to its caller.
+
+```java
+public void someMethod() throws SomeException {
+    // Method implementation
+}
+```
+
+On the other hand, the "throw" keyword is used to explicitly throw an exception within the code. This allows developers to create and propagate exceptions programmatically.
+
+```java
+throw new SomeException("Something went wrong.");
+```
